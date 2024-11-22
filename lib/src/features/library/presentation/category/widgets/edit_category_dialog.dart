@@ -28,17 +28,15 @@ class EditCategoryDialog extends HookConsumerWidget {
     bool defaultCategory,
     bool locked,
   ) async {
-    if (locked) {
-      bool success = await authenticate();
-      if (success) {
-        categoryName = "🔒 $categoryName";
-      }
-    }
-    if (category?.locked == true && locked == false) {
+    if (locked != (category?.locked ?? false)) {
       bool success = await authenticate();
       if (!success) {
-        categoryName = "🔒 $categoryName";
+        locked = category?.locked ?? false;
       }
+    }
+
+    if (locked) {
+      categoryName = "🔒 $categoryName";
     }
 
     return editCategory((category ?? Category()).copyWith(
