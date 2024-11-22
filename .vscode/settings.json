@@ -28,5 +28,5 @@
   "licenser.license": "MPLv2",
   "licenser.projectName": "Tachidesk-Sorayomi",
   "licenser.author": "Contributors to the Suwayomi project",
-  "dart.flutterSdkPath": ".fvm/versions/3.16.7"
+  "dart.flutterSdkPath": ".fvm/versions/3.22.3"
 }

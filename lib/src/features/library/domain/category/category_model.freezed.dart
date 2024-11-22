@@ -12,7 +12,7 @@ part of 'category_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Category _$CategoryFromJson(Map<String, dynamic> json) {
   return _Category.fromJson(json);
@@ -21,7 +21,8 @@ Category _$CategoryFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Category {
   int? get id => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: "name")
+  String? get unparsedName => throw _privateConstructorUsedError;
   int? get order => throw _privateConstructorUsedError;
   @JsonKey(name: "default")
   bool? get defaultCategory => throw _privateConstructorUsedError;
@@ -39,7 +40,7 @@ abstract class $CategoryCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
-      String? name,
+      @JsonKey(name: "name") String? unparsedName,
       int? order,
       @JsonKey(name: "default") bool? defaultCategory});
 }
@@ -58,7 +59,7 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
+    Object? unparsedName = freezed,
     Object? order = freezed,
     Object? defaultCategory = freezed,
   }) {
@@ -67,9 +68,9 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      unparsedName: freezed == unparsedName
+          ? _value.unparsedName
+          : unparsedName // ignore: cast_nullable_to_non_nullable
               as String?,
       order: freezed == order
           ? _value.order
@@ -93,7 +94,7 @@ abstract class _$$CategoryImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
-      String? name,
+      @JsonKey(name: "name") String? unparsedName,
       int? order,
       @JsonKey(name: "default") bool? defaultCategory});
 }
@@ -110,7 +111,7 @@ class __$$CategoryImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
+    Object? unparsedName = freezed,
     Object? order = freezed,
     Object? defaultCategory = freezed,
   }) {
@@ -119,9 +120,9 @@ class __$$CategoryImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      unparsedName: freezed == unparsedName
+          ? _value.unparsedName
+          : unparsedName // ignore: cast_nullable_to_non_nullable
               as String?,
       order: freezed == order
           ? _value.order
@@ -140,7 +141,7 @@ class __$$CategoryImplCopyWithImpl<$Res>
 class _$CategoryImpl implements _Category {
   _$CategoryImpl(
       {this.id,
-      this.name,
+      @JsonKey(name: "name") this.unparsedName,
       this.order,
       @JsonKey(name: "default") this.defaultCategory});
 
@@ -150,7 +151,8 @@ class _$CategoryImpl implements _Category {
   @override
   final int? id;
   @override
-  final String? name;
+  @JsonKey(name: "name")
+  final String? unparsedName;
   @override
   final int? order;
   @override
@@ -159,7 +161,7 @@ class _$CategoryImpl implements _Category {
 
   @override
   String toString() {
-    return 'Category(id: $id, name: $name, order: $order, defaultCategory: $defaultCategory)';
+    return 'Category(id: $id, unparsedName: $unparsedName, order: $order, defaultCategory: $defaultCategory)';
   }
 
   @override
@@ -168,7 +170,8 @@ class _$CategoryImpl implements _Category {
         (other.runtimeType == runtimeType &&
             other is _$CategoryImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
+            (identical(other.unparsedName, unparsedName) ||
+                other.unparsedName == unparsedName) &&
             (identical(other.order, order) || other.order == order) &&
             (identical(other.defaultCategory, defaultCategory) ||
                 other.defaultCategory == defaultCategory));
@@ -177,7 +180,7 @@ class _$CategoryImpl implements _Category {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, name, order, defaultCategory);
+      Object.hash(runtimeType, id, unparsedName, order, defaultCategory);
 
   @JsonKey(ignore: true)
   @override
@@ -196,7 +199,7 @@ class _$CategoryImpl implements _Category {
 abstract class _Category implements Category {
   factory _Category(
       {final int? id,
-      final String? name,
+      @JsonKey(name: "name") final String? unparsedName,
       final int? order,
       @JsonKey(name: "default") final bool? defaultCategory}) = _$CategoryImpl;
 
@@ -206,7 +209,8 @@ abstract class _Category implements Category {
   @override
   int? get id;
   @override
-  String? get name;
+  @JsonKey(name: "name")
+  String? get unparsedName;
   @override
   int? get order;
   @override

@@ -62,6 +62,8 @@
 			<string>pt-pt</string>
 			<string>zh</string>
 			<string>zh-hans</string>
-		</array>
+    </array>
+    <key>NSFaceIDUsageDescription</key>
+    <string>Locked Categories</string>
 	</dict>
 </plist>

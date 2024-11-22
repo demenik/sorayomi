@@ -15,7 +15,9 @@ import '../../../../utils/extensions/custom_extensions.dart';
 import '../../../../utils/misc/toast/toast.dart';
 import '../../../../widgets/emoticons.dart';
 import '../../../../widgets/search_field.dart';
+import '../../../auth/auth_provder.dart';
 import '../../../manga_book/widgets/update_status_popup_menu.dart';
+import '../../domain/category/category_model.dart';
 import '../category/controller/edit_category_controller.dart';
 import 'category_manga_list.dart';
 import 'controller/library_controller.dart';
@@ -33,6 +35,7 @@ class LibraryScreen extends HookConsumerWidget {
       categoryList.showToastOnError(toast, withMicrotask: true);
       return;
     }, [categoryList.valueOrNull]);
+    final authenticated = ref.watch(authProvider);
 
     return categoryList.showUiWhenData(
       context,
@@ -62,7 +65,27 @@ class LibraryScreen extends HookConsumerWidget {
                           TabBar(
                             isScrollable: true,
                             tabs: data
-                                .map((e) => Tab(text: e.name ?? ""))
+                                .map(
+                                  (e) => Tab(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Builder(builder: (context) {
+                                          return e.locked == true
+                                              ? Icon(
+                                                  authenticated
+                                                      ? Icons.lock_open_rounded
+                                                      : Icons.lock_rounded,
+                                                  size: 16,
+                                                )
+                                              : const SizedBox.shrink();
+                                        }),
+                                        const SizedBox(width: 4),
+                                        Text(e.name ?? "")
+                                      ],
+                                    ),
+                                  ),
+                                )
                                 .toList(),
                             dividerColor: Colors.transparent,
                           ),

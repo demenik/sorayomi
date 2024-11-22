@@ -11,6 +11,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../../utils/extensions/custom_extensions.dart';
 import '../../../../../utils/misc/toast/toast.dart';
 import '../../../../../widgets/pop_button.dart';
+import '../../../../auth/auth_provder.dart';
 import '../../../domain/category/category_model.dart';
 
 class EditCategoryDialog extends HookConsumerWidget {
@@ -25,9 +26,23 @@ class EditCategoryDialog extends HookConsumerWidget {
   Future<void> submitEditCategory(
     String categoryName,
     bool defaultCategory,
+    bool locked,
   ) async {
+    if (locked) {
+      bool success = await authenticate();
+      if (success) {
+        categoryName = "🔒 $categoryName";
+      }
+    }
+    if (category?.locked == true && locked == false) {
+      bool success = await authenticate();
+      if (!success) {
+        categoryName = "🔒 $categoryName";
+      }
+    }
+
     return editCategory((category ?? Category()).copyWith(
-      name: categoryName,
+      unparsedName: categoryName,
       defaultCategory: defaultCategory,
     ));
   }
@@ -36,6 +51,7 @@ class EditCategoryDialog extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryName = useTextEditingController(text: category?.name);
     final defaultCategory = useState((category?.defaultCategory).ifNull());
+    final locked = useState((category?.locked).ifNull());
     return AlertDialog(
       title: Text(
         category == null
@@ -59,6 +75,7 @@ class EditCategoryDialog extends HookConsumerWidget {
                     submitEditCategory(
                       categoryName.text,
                       defaultCategory.value,
+                      locked.value,
                     );
                     Navigator.pop(context);
                   }
@@ -74,7 +91,18 @@ class EditCategoryDialog extends HookConsumerWidget {
               }
             },
             title: Text(context.l10n!.defaultCategory),
-          )
+          ),
+          CheckboxListTile(
+            value: locked.value,
+            dense: true,
+            controlAffinity: ListTileControlAffinity.leading,
+            onChanged: (value) {
+              if (value != null) {
+                locked.value = (value);
+              }
+            },
+            title: const Text("Locked"), //Text(context.l10n!.locked),
+          ),
         ],
       ),
       actions: [
@@ -87,7 +115,11 @@ class EditCategoryDialog extends HookConsumerWidget {
                   .show(context.l10n!.emptyCategory);
               return;
             }
-            submitEditCategory(categoryName.text, defaultCategory.value);
+            submitEditCategory(
+              categoryName.text,
+              defaultCategory.value,
+              locked.value,
+            );
             Navigator.pop(context);
           },
           child: Text(context.l10n!.save),

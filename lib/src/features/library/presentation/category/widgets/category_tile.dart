@@ -35,7 +35,13 @@ class CategoryTile extends HookConsumerWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.label_rounded),
-              title: Text(category.name ?? ""),
+              title: Row(children: [
+                Text(category.name ?? ""),
+                const SizedBox(width: 8),
+                category.locked == true
+                    ? const Icon(Icons.lock_rounded, size: 20)
+                    : const SizedBox.shrink(),
+              ]),
             ),
             Row(
               children: [

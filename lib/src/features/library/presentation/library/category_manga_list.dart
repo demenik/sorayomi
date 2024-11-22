@@ -17,24 +17,77 @@ import '../../../../widgets/emoticons.dart';
 import '../../../../widgets/manga_cover/grid/manga_cover_grid_tile.dart';
 import '../../../../widgets/manga_cover/list/manga_cover_descriptive_list_tile.dart';
 import '../../../../widgets/manga_cover/list/manga_cover_list_tile.dart';
+import '../../../auth/auth_provder.dart';
 import '../../../manga_book/presentation/manga_details/widgets/edit_manga_category_dialog.dart';
 import '../../../settings/presentation/appearance/widgets/grid_cover_min_width.dart';
+import '../../domain/category/category_model.dart';
+import '../category/controller/edit_category_controller.dart';
 import 'controller/library_controller.dart';
 
-class CategoryMangaList extends HookConsumerWidget {
+class CategoryMangaList extends StatefulHookConsumerWidget {
   const CategoryMangaList({super.key, required this.categoryId});
   final int categoryId;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final provider =
-        categoryMangaListWithQueryAndFilterProvider(categoryId: categoryId);
+  ConsumerState<CategoryMangaList> createState() => CategoryMangaListState();
+}
+
+class CategoryMangaListState extends ConsumerState<CategoryMangaList>
+    with WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.paused:
+        ref.read(authProvider.notifier).state = false;
+        break;
+      default:
+        break;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addObserver(this);
+
+    final provider = categoryMangaListWithQueryAndFilterProvider(
+        categoryId: widget.categoryId);
     final mangaList = ref.watch(provider);
     final displayMode = ref.watch(libraryDisplayModeProvider);
-    refresh() => ref.invalidate(categoryMangaListProvider(categoryId));
+    refresh() => ref.invalidate(categoryMangaListProvider(widget.categoryId));
     useEffect(() {
       if (mangaList.isNotLoading) refresh();
       return;
     }, []);
+    final categoryProvider = getCategoryProvider(categoryId: widget.categoryId);
+    final category = ref.watch(categoryProvider);
+    final authenticated = ref.watch(authProvider);
+    if (category?.locked == true && authenticated == false) {
+      authenticate().then((value) {
+        ref.read(authProvider.notifier).state = value;
+      }).catchError((e) {
+        throw e;
+      });
+
+      return Emoticons(
+        button: TextButton(
+          onPressed: () {
+            authenticate().then((value) {
+              ref.read(authProvider.notifier).state = value;
+            }).catchError((e) {
+              throw e;
+            });
+          },
+          child: const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.lock_open_rounded),
+              SizedBox(width: 8),
+              Text("Unlock Category"),
+            ],
+          ),
+        ),
+      );
+    }
     return mangaList.showUiWhenData(
       context,
       (data) {
@@ -57,7 +110,7 @@ class CategoryMangaList extends HookConsumerWidget {
                   if (data[index].id != null) {
                     MangaRoute(
                       mangaId: data[index].id!,
-                      categoryId: categoryId,
+                      categoryId: widget.categoryId,
                     ).push(context);
                   }
                 },
@@ -98,7 +151,7 @@ class CategoryMangaList extends HookConsumerWidget {
                   if (data[index].id != null) {
                     MangaRoute(
                       mangaId: data[index].id!,
-                      categoryId: categoryId,
+                      categoryId: widget.categoryId,
                     ).push(context);
                   }
                 },
@@ -115,7 +168,7 @@ class CategoryMangaList extends HookConsumerWidget {
                   if (data[index].id != null) {
                     MangaRoute(
                       mangaId: data[index].id!,
-                      categoryId: categoryId,
+                      categoryId: widget.categoryId,
                     ).push(context);
                   }
                 },

@@ -68,3 +68,12 @@ List<Category>? categoryListQuery(
   final categoryList = ref.watch(categoryControllerProvider).valueOrNull;
   return categoryList?.where((element) => element.name.query(query)).toList();
 }
+
+@riverpod
+Category? getCategory(
+  GetCategoryRef ref, {
+  required int categoryId,
+}) {
+  final categoryList = ref.watch(categoryControllerProvider).valueOrNull;
+  return categoryList?.firstWhere((element) => element.id == categoryId);
+}

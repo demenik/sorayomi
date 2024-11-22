@@ -13,11 +13,21 @@ part 'category_model.g.dart';
 class Category with _$Category {
   factory Category({
     int? id,
-    String? name,
+    @JsonKey(name: "name") String? unparsedName,
     int? order,
     @JsonKey(name: "default") bool? defaultCategory,
   }) = _Category;
 
   factory Category.fromJson(Map<String, dynamic> json) =>
       _$CategoryFromJson(json);
+}
+
+extension LockedExtension on Category {
+  String? get name {
+    return unparsedName?.replaceAll("🔒 ", "");
+  }
+
+  bool? get locked {
+    return unparsedName?.startsWith("🔒 ");
+  }
 }

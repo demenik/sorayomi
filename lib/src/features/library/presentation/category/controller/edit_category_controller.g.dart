@@ -156,6 +156,134 @@ class _CategoryListQueryProviderElement
   String get query => (origin as CategoryListQueryProvider).query;
 }
 
+String _$getCategoryHash() => r'eab51e453f9c249a483244de7d7b75011f3e5e2f';
+
+/// See also [getCategory].
+@ProviderFor(getCategory)
+const getCategoryProvider = GetCategoryFamily();
+
+/// See also [getCategory].
+class GetCategoryFamily extends Family<Category?> {
+  /// See also [getCategory].
+  const GetCategoryFamily();
+
+  /// See also [getCategory].
+  GetCategoryProvider call({
+    required int categoryId,
+  }) {
+    return GetCategoryProvider(
+      categoryId: categoryId,
+    );
+  }
+
+  @override
+  GetCategoryProvider getProviderOverride(
+    covariant GetCategoryProvider provider,
+  ) {
+    return call(
+      categoryId: provider.categoryId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getCategoryProvider';
+}
+
+/// See also [getCategory].
+class GetCategoryProvider extends AutoDisposeProvider<Category?> {
+  /// See also [getCategory].
+  GetCategoryProvider({
+    required int categoryId,
+  }) : this._internal(
+          (ref) => getCategory(
+            ref as GetCategoryRef,
+            categoryId: categoryId,
+          ),
+          from: getCategoryProvider,
+          name: r'getCategoryProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getCategoryHash,
+          dependencies: GetCategoryFamily._dependencies,
+          allTransitiveDependencies:
+              GetCategoryFamily._allTransitiveDependencies,
+          categoryId: categoryId,
+        );
+
+  GetCategoryProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.categoryId,
+  }) : super.internal();
+
+  final int categoryId;
+
+  @override
+  Override overrideWith(
+    Category? Function(GetCategoryRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetCategoryProvider._internal(
+        (ref) => create(ref as GetCategoryRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        categoryId: categoryId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeProviderElement<Category?> createElement() {
+    return _GetCategoryProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetCategoryProvider && other.categoryId == categoryId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, categoryId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetCategoryRef on AutoDisposeProviderRef<Category?> {
+  /// The parameter `categoryId` of this provider.
+  int get categoryId;
+}
+
+class _GetCategoryProviderElement extends AutoDisposeProviderElement<Category?>
+    with GetCategoryRef {
+  _GetCategoryProviderElement(super.provider);
+
+  @override
+  int get categoryId => (origin as GetCategoryProvider).categoryId;
+}
+
 String _$categoryControllerHash() =>
     r'03ec5d51bea1147db0139fa68edaeefdacb11f70';
 
