@@ -13,10 +13,10 @@ import '../../../../../constants/app_sizes.dart';
 
 import '../../../../../routes/router_config.dart';
 import '../../../../../utils/extensions/custom_extensions.dart';
-import '../../../../../utils/launch_url_in_web.dart';
 import '../../../../../utils/misc/toast/toast.dart';
 import '../../../../../widgets/async_buttons/async_text_button_icon.dart';
 import '../../../../../widgets/manga_cover/list/manga_cover_descriptive_list_tile.dart';
+import '../../../../webview/presentation/webview_screen/webview_screen.dart';
 import '../../../domain/manga/manga_model.dart';
 
 class MangaDescription extends HookConsumerWidget {
@@ -73,10 +73,15 @@ class MangaDescription extends HookConsumerWidget {
               if (manga.realUrl.isNotBlank)
                 TextButton.icon(
                   onPressed: () async {
-                    launchUrlInWeb(
-                      context,
-                      (manga.realUrl ?? ""),
-                      ref.read(toastProvider(context)),
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return WebviewScreen(
+                            title: manga.title ?? "",
+                            url: manga.realUrl ?? "about:blank",
+                          );
+                        },
+                      ),
                     );
                   },
                   icon: const Icon(Icons.public),
