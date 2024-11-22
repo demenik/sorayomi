@@ -13,3 +13,4 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 
 table.insert(require("nvim-tree").config.filters.custom, "**/*\\.g\\.dart")
+table.insert(require("nvim-tree").config.filters.custom, "**/*\\.freezed\\.dart")
