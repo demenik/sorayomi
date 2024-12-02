@@ -62,12 +62,6 @@ class CategoryMangaListState extends ConsumerState<CategoryMangaList>
     final category = ref.watch(categoryProvider);
     final authenticated = ref.watch(authProvider);
     if (category?.locked == true && authenticated == false) {
-      authenticate().then((value) {
-        ref.read(authProvider.notifier).state = value;
-      }).catchError((e) {
-        throw e;
-      });
-
       return Emoticons(
         button: TextButton(
           onPressed: () {
